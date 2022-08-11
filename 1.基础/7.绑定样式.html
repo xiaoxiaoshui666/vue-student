@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="../JS/vue.js"></script>
+    <style>
+        .borde {
+            border: 3px solid black;
+        }
+
+        .colo {
+            color: green;
+        }
+
+        .weigh {
+            font-weight: 700
+        }
+
+        .backgroun {
+            background-color: yellow;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 1. 绑定样式：
+            :class="xxx" xxx可以是字符串，对象，数组
+         2. 绑定样式：
+            :style="{ color: activeColor, fontSize: fontSize + 'px' }"
+                其中 activeColor/fontSize 是 data属性
+    -->
+    <div id="root">
+        <!-- class的字符串写法，适用于：类名不确定，要动态获取 -->
+        <p class="borde" :class="mystyle">{{ msg }}</p>
+
+        <!-- class的对象写法，适用于：类名确定，但不确定用不用 -->
+        <!-- 对象里面的所有的 属性名 k都是 字符串，所以不用 在{} 加引号 -->
+        <p class="borde" :class="{colo:classA, weigh: classB}">{{ msg }}</p>
+
+        <!-- class的三元表达式写法，适用于：类名确定，但不确定用不用 -->
+        <p class="borde" :class="classA ? 'colo' : ''">{{ msg }}</p>
+
+        <!-- class的数组写法，适用于：同时应用多个class -->
+        <p class="borde" :class="[a,b,c]">{{ msg }}</p>
+
+        <!-- 绑定style行内样式 -->
+        <!-- 1. 一般要把样式名写成驼峰命名-->
+        <!-- 2. :style="{}" 必须加大括号表示为对象 不加就会在data里找fontSize然后找不到报错 -->
+        <!-- 3. 'px'单位要加引号 不加引号就视为data的数据会报错 -->
+        <p class="borde" :class="[a,b,c]" :style="{fontSize: size +'px'}">{{ msg }}</p>
+
+    </div>
+    <script type="text/javascript">
+        new Vue({
+            el: "#root",
+            data: {
+                msg: '小明今天在写代码很开心',
+                mystyle: 'borde',
+                classA: true,  // 标识是否使用classA样式 ，相当于一个开关
+                classB: true,
+                a: 'colo',
+                b: 'weigh',
+                c: 'backgroun',
+                size: 26
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="../../JS/vue.js"></script>
+</head>
+
+<body>
+    <!-- 
+        1.一个重要的内置关系: VueComponent.prototype.__proto__ === Vue.prototype
+        2.为什么要有这个关系: 让组件实例对象(vc）可以访问到Vue原型上的属性、方法。
+     -->
+    <div id="root">
+        <school></school>
+    </div>
+    <script type="text/javascript">
+        Vue.config.productionTip = false;
+        // 1.当引入Vue文件的时候就有了 Vue的构造函数  里面有一个属性叫prototype 指向自己的 Vue的原型对象 
+        // Vue 通过new出来的实例 vm，通过 隐示原型属性 vm.__proto__.$mount 也可以访问到 Vue的原型对象 的$mount属性
+        // 即 Vue.prototype = vm.__proto__
+
+        // 2.当创建一个组件时会 调用Vue.extend() 返回一个 VueComponent构造函数，同样里面有一个属性叫prototype也指向自己 VueComponent的原型对象
+        // 在编写组件标签时就 new一个VueComponent的实例vc 同理 vc.__proto__ = VueComponent.prototype 指向同一个原型对象
+
+        // 而在Vue中 vc.__proto__ = VueComponent.prototype 的共有的这个 原型对象 的原型对象 （原本指向Object的原型对象）却指向了 Vue的原型对象  Vue.prototype = vm.__proto__
+        // VueComponent.prototype.__proto__ === Vue.prototype
+        // VueComponent.prototype.__proto__ === vm.__proto__
+        // vc.__proto__.__proto__ === Vue.prototype
+        // vc.__proto__.__proto__ === vm.__proto__
+
+        Vue.prototype.x = 99
+
+        const school = Vue.extend({  // 通过调用 Vue.extend() 返回 名为school的 VueComponent构造函数
+            template: `
+                <div>城市：{{city}}
+                    <button @click="getvc">拿一下vc</button>    
+                </div>
+            `,
+            data() {
+                return {
+                    city: "湖北"
+                }
+            },
+            methods: {
+                getvc() {
+                    console.log(this);  // vc实例
+                    console.log(this.x);  // 能拿到Vue原型上的x属性
+                    console.log(this === vm.msg);  // 不能访问vm里面的数据
+                    console.log(this.__proto__ === school.prototype);            // true
+                    console.log(school.prototype.__proto__ === Vue.prototype);   // true
+                    console.log(school.prototype.__proto__ === vm.__proto__);    // true
+                    console.log(this.__proto__.__proto__ === Vue.prototype);     // true
+                    console.log(this.__proto__.__proto__ === vm.__proto__);      // true
+                }
+            },
+        })
+        const vm = new Vue({
+            el: "#root",
+            data: {
+                msg: 100
+            },
+            components: {
+                school
+            }
+        })
+    </script>
+
+</body>
+
+</html>

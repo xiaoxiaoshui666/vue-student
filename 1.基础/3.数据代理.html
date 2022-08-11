@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="../JS/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h1>今天是：{{ day }}</h1>
+    </div>
+    <script type="text/javascript">
+        /* 关于Vue中的数据代理:
+        1.什么是数据代理?
+            (1).配置对象data中的数据，会被收集到vm._data中然后通过，0bjectdefinePropert让vm上拥有data中所有的属性
+            (2).当访问vm的msg时,返回的是data当中同名属性的值
+            (3).当修改vm的msg时,修改的是data当中同名属性的值
+        2.为什么要数据代理?
+            为了更加方便的读取和修改data中的数据，不做数据代理，就要:vm._data.xxx访问数据
+        3.为什么要先收集在_data中，然后再代理出去呢?
+            更高效的监视数据（直接收集到vm上会导致监视效率太低)，vue只用检测 vm._data 的数据即用户传的数据，就不用整个vm实例都要检测了缩小了范围 */
+        new Vue({
+            el: '#root',
+            data: {
+                day: '星期一'
+            }
+        })
+
+        // 模拟数据代理
+        // _data 就好比data上的值，vm就好比new的vue实例，
+        let _data = { msg: '星期一' }
+        let vm = {}
+        Object.defineProperty(vm, 'msg', {
+            set(value) {
+                console.log('set被调用了', value);
+                _data.msg = value
+                console.log(_data);
+            },
+            get() {
+                console.log('get被调用了');
+                return _data.msg
+            }
+        })
+        console.log(vm.msg);
+
+        // 数据代理案例
+        // let student = {}
+        // Object.defineProperty(student, 'uname', {
+        //     set(value) {
+        //         console.log('set被调用了', value);
+        //         _data.msg = value
+        //     },
+        //     get() {
+        //         console.log('get被调用了');
+        //         return '小米'
+        //     }
+        // })
+        // console.log(student.uname);
+        // student.uname = '小明'
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="../JS/vue.js"></script>
+</head>
+
+<body>
+    <!-- 
+                将要创建数据  ===>调用  beforeCreate函数。 （未开始数据代理和数据监视）
+                创建完毕数据  ===>调用  created函数（完成数据代理和数据监视）
+                将要挂载页面  ===>调用  beforeMount
+        (重要） 挂载完毕页面  ===>调用  mounted函数
+                将要更新数据  ===>调用  beforeUpdate函数。
+                更新完毕数据  ===>调用  updated函数
+        (重要）  将要销毁vm  ===>调用  beforeDestroy函数。========>【重要的钩子】(能操作数据但是不会渲染到页面了，数据不监听了，也不能触发修改数据的两个生命周期狗子)
+                销毁完毕vm  ===>调用  destroyed函数。
+     -->
+
+    <!-- 
+        常用的生命周期钩子:
+            1.mounted: 发送ajax请求、启动定时器、绑定自定义事件、订阅消息等【初始化操作】。
+            2.beforeDestroy: 清除定时器、解绑自定义事件、取消订阅消息等【收尾工作】。
+        关于销毁Vue实例
+            1.销毁后借助Vue开发者工具看不到任何信息。
+            2.销毁后自定义事件会失效,但 原生DOM事件如click 依然有效。
+            3.一般不会在beforeDestroy操作数据，因为即便操作数据，也不会再触发页面更新了。
+      -->
+    <div id="root">
+        <h2 :style="{opacity}">我分手了好难过</h2>
+        <button @click="opacity = 1">我又恋爱了</button>
+        <button @click="bye">我很难过</button>
+
+    </div>
+    <script type="text/javascript">
+        new Vue({
+            el: '#root',
+            data: {
+                opacity: 1
+            },
+            methods: {
+                bye() {
+                    this.$destroy();  // this.$destroy() 销毁 vm实例    此时数据不监听不渲染页面了
+                }
+            },
+            mounted() {   // vm挂载完毕
+                this.timer = setInterval(() => {
+                    this.opacity -= 0.01
+                    if (this.opacity <= 0) this.opacity = 1
+                }, 16);
+            },
+            beforeDestroy() {
+                console.log(this);
+                clearInterval(this.timer)  // 在 将要销毁时 清除定时器
+            }
+        })
+    </script>
+
+</body>
+
+</html>

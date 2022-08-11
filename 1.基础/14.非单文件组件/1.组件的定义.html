@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="../../JS/vue.js"></script>
+</head>
+
+<body>
+    <!-- 
+        一、如何定义一个组件?
+            使用 Vue.extend(options) 创建，其中options和new Vue(options)时传入的那个options几乎一样，但也有点区别;
+            // 可以简写 const student = Vue.extend({ })   ===> const student = { }
+            区别如下:
+                1.el不要写，为什么?—最终所有的组件都要经过一个vm的管理，由vm中的el决定服务哪个容器。
+                2.data必须写成函数为什么?——避免组件被多次使用时，存在数据引用关系。
+            备注:使用template可以配置组件结构。
+        二、如何注册组件?
+            1.局部注册:靠 new Vue({}) 的时候传入 components 选项
+            2.全局注册:靠 Vue.component('组件名’,组件)
+        三、编写组件标签:
+            <school></school>
+     -->
+    <div id="root">
+        <!-- 引用组件 -->
+        <school></school>
+        <hr>
+        <student></student>
+    </div>
+    <script type="text/javascript">
+
+        // 创建学校组件
+        const school = Vue.extend({
+            template: `
+                <div>
+                    <h2>学校：{{name}}</h2>    
+                    <h2>所在地：{{city}}</h2>    
+                </div>
+            `,
+            data() {
+                return {
+                    name: "第三中学",
+                    city: "湖北"
+                }
+            }
+        })
+        // 创建学生组件
+        /* const student = Vue.extend({
+            template: `
+                <div>
+                    <h2>学生：{{name}}</h2>    
+                    <h2>年龄：{{age}}</h2>    
+                </div>
+            `,
+            data() {
+                return {
+                    name: "张三",
+                    age: 18
+                }
+            }
+        }) */
+        // 可简写
+        const student = {
+            template: `
+                <div>
+                    <h2>学生：{{name}}</h2>    
+                    <h2>年龄：{{age}}</h2>    
+                </div>
+            `,
+            data() {
+                return {
+                    name: "张三",
+                    age: 18
+                }
+            }
+        }
+
+        // 全局注册组件
+        // Vue.component('school', school)
+        // Vue.component('student', student)
+
+        new Vue({
+            el: '#root',
+            data: {},       //数据
+            methods: {},    // 方法
+            computed: {},   // 计算属性
+            watch: {},      // 数据监视
+            filters: {},    // 过滤器
+            directives: {}, // 自定义指令
+            // 局部注册组件
+            components: {   // 组件
+                school,
+                student
+            }
+        })
+    </script>
+</body>
+
+</html>

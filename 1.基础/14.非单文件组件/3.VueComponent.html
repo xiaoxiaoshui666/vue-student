@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="../../JS/vue.js"></script>
+</head>
+
+<body>
+    <!-- 
+        关于VueComponent:
+            1.school组件本质是一个名为VueComponent的构造函数，且不是程序员定义的，是Vue.extend生成的。
+            （每创建一个组件就会调用Vue.extent({}),返回的一个构造函数VueComponent）
+
+            2.我们只需要写<school/>或<schoolx</school>，Vue解析时会帮我们创建school组件的实例对象，
+            即Vue帮我们执行的:new VueComponent(options)。
+
+            3.特别注意:每次调用Vue.extend，返回的都是一个全新的VueComponent!!!!
+            
+            4.关于this指向:
+                (1).组件配置中:
+                    data函数、methods中的函数、watch中的函数、computed中的函数它们的this均是【VueComponent实例对象
+                (2).new Vue()配置中:
+                    data函数、methods中的函数、watch中的函数、computed中的函数它们的this均是【Vue实例对象】。
+
+            5.VueComponent的实例对象，以后简称vc（也可称之为:组件实例对象）.
+                Vue的实例对象,以后简称vm.
+     -->
+    <div id="root">
+        <school></school> <!-- 每在页面上写一个<school></school>，就都会new一个vuecomponent构造函数 生成vc实例 -->
+    </div>
+    <script type="text/javascript">
+        Vue.config.productionTip = false;
+        // 创建学校组件 
+        const school = Vue.extend({     // vue内部会帮我们调用了Vue.extend() 然后就生成了一个vuecomponent构造函数   说白了这里的school组件就是个构造函数
+            template: `
+                <div>
+                    <h2>学校：{{name}}</h2>
+                    <h2>城市：{{city}}</h2>
+                    <button @click="show">点击</button>
+                </div>
+            `,
+            data() {
+                return {
+                    name: "第三中学",
+                    city: "湖北"
+                }
+            },
+            methods: {
+                show() {
+                    console.log(this);  // 组件中的this指向vc
+                }
+            }
+        })
+        console.log(school);
+        const vm = new Vue({
+            el: "#root",
+            data: {
+                msg: 1
+            },
+            components: {
+                school
+            }
+        })
+        console.log(vm);
+    </script>
+
+</body>
+
+</html>

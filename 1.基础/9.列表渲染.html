@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="../JS/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <!-- v-for 用于遍历列表数据 -->
+        <h2>遍历数组</h2>
+        <ul>
+            <!-- 有破坏顺序的操作 -->
+            <li v-for="(item, index) in arr" :key="item.id">{{ item.uname }}---{{item.age}}岁---{{item.sex}}-----{{ index
+                }}</li>
+        </ul>
+        <h2>遍历对象</h2>
+        <ul>
+            <!--     (属性值value，属性名k，索引) -->
+            <li v-for="(value,key,index) in car" :key="key">{{ value }}---{{ key }}---{{index}}</li>
+        </ul>
+        <h2>遍历字符串</h2>
+        <ul>
+            <li v-for="(data,index) in str" :key="index">{{ data }}---{{ index }}</li>
+        </ul>
+        <hr>
+        <h2>人员列表</h2>
+        <input type="text" placeholder="请输入姓名" v-model='keywords'>
+        <button @click="sortList = 0">返回原列表</button>
+        <button @click="sortList = 1">升序</button>
+        <button @click="sortList = 2">降序</button>
+        <ul>
+            <li v-for="item in newList" :key="item.id">{{item.uname}}---{{item.age}}---{{item.sex}}</li>
+        </ul>
+        <hr>
+        <h2>人员更新</h2>
+        <button @click="changedata">更改信息</button>
+        <ul>
+            <li v-for="item in xiyouxi" :key="item.id">{{item.uname}}---{{item.age}}---{{item.sex}}</li>
+        </ul>
+    </div>
+    <script type="text/javascript">
+        const vm = new Vue({
+            el: "#root",
+            data: {
+                arr: [
+                    { id: 1, uname: '小明', age: '19', sex: '男' },
+                    { id: 2, uname: '小张', age: '16', sex: '女' },
+                    { id: 3, uname: '小李', age: '21', sex: '女' },
+                    { id: 4, uname: '小王', age: '15', sex: '男' },
+                ],
+                car: {
+                    name: "奔驰",
+                    price: "80w",
+                    color: "白色"
+                },
+                str: "shuixing",
+                keywords: '',
+                sortList: 0,
+                persons: [
+                    { id: 1, uname: '古力娜扎', age: '19', sex: '女' },
+                    { id: 2, uname: '迪丽热巴', age: '16', sex: '女' },
+                    { id: 3, uname: '力巴啦', age: '21', sex: '女' },
+                    { id: 4, uname: '玛尔扎哈', age: '15', sex: '男' },
+                ],
+                list: [   // 案例原数组
+                    { id: 1, uname: '古力娜扎', age: '19', sex: '女' },
+                    { id: 2, uname: '迪丽热巴', age: '16', sex: '女' },
+                    { id: 3, uname: '力巴啦', age: '21', sex: '女' },
+                    { id: 4, uname: '玛尔扎哈', age: '15', sex: '男' },
+                ],
+                xiyouxi: [
+                    { id: 1, uname: '孙悟空', age: '159', sex: '男' },
+                    { id: 2, uname: '猪八戒', age: '16', sex: '男' },
+                    { id: 3, uname: '沙和尚', age: '221', sex: '男' },
+                    { id: 4, uname: '唐僧', age: '115', sex: '女' },
+                ]
+            },
+            methods: {
+                changedata() {
+                    // this.xiyouxi[0] = { id: 1, uname: '六耳猕猴', age: '1000', sex: '男' } 不能修改数组元素
+                    this.xiyouxi.splice(0, 1, { id: 1, uname: '六耳猕猴', age: '1000', sex: '男' })
+                    /*  Vue监视数据的原理  
+                             1. vue会监视data中所有层次对象的属性
+                             2。对象中的属性数据通过添加set方法来来实现监视
+                                Vue.set(this.car, 'length', '3m') 或  this.$set(this.car, 'length', '3m')
+                                在data数据的 car对象里 添加一个 length 属性
+                             3，数组中也实现了监视:重写数组一系列更新元素的方法，做了两件事:
+                                (1).调用原生对应的方法 如push()等 对数组进行处理
+                                (2).去更新界面 */
+                    console.log(this);
+                }
+            },
+            computed: {
+                // 因为计算属性用到了 keywords 当keywords 一变化就调用函数
+                newList() {
+                    /* 查找 */
+                    const { keywords, list, sortList } = this   // vm实例有data数据中的keywords可以直接解构赋值
+                    // 过滤原数组list 找 list的uname 包不包含 keywords   // 然后直接return这个新数组 作为计算属性的值
+                    const arr = list.filter(item => item.uname.indexOf(keywords) != -1)
+                    /* 升序降序  */
+                    if (sortList) {  // sortList 为true不为0 执行循环
+                        arr.sort((a, b) => {
+                            if (sortList === 1) return a.age - b.age
+                            else return b.age - a.age
+                        })
+                    }
+                    return arr
+                }
+            }
+        })
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="../../JS/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <app></app>
+    </div>
+    <script type="text/javascript">
+        // 创建学生组件
+        const student = {
+            template: `
+                <div>
+                    <h2>姓名：{{name}}</h2>
+                    <h2>年纪：{{age}}</h2>
+                </div>
+            `,
+            data() {
+                return {
+                    name: "小明",
+                    age: 18
+                }
+            }
+        }
+        // 创建学校组件
+        const school = {
+            template: `
+                <div>
+                    <h2>学校：{{name}}</h2>
+                    <h2>城市：{{city}}</h2>
+                    <student></student>
+                </div>
+            `,
+            data() {
+                return {
+                    name: "第三中学",
+                    city: "湖北"
+                }
+            },
+            components: {
+                student
+            }
+        }
+        // 创键图书馆组件
+        const library = {
+            template: `
+                <h2>{{book}}</h2>
+            `,
+            data() {
+                return {
+                    book: '小人书'
+                }
+            }
+
+        }
+        // 创建app根组件
+        const app = {
+            template: `
+                <div>
+                    <school></school>
+                    <library></library>
+                </div>
+            `,
+            components: {
+                school,
+                library
+            }
+        }
+        new Vue({
+            el: '#root',
+            data: {
+            },
+            components: {
+                app
+            }
+        })
+    </script>
+</body>
+
+</html>

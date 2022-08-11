@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h1>{{ msg }}</h1>
+    </div>
+
+    <script type="text/javascript">
+        /* 
+            1.所有被Vue所调用(管理)的函数，都不要写箭头函数-例如：观看中的函数、计算的中的函数
+            2.所有不是被vue所调(管理)的函数，都要写成箭头函数---例如:定时器的回调、ajax的回调等等
+
+            v-开头的指令不要前面不要加冒号，如果是标签属性的需要动态指定的需要加冒号 
+
+            {{ }} 里面的数据一定要出现在vm实例身上的才行 如data，计算属性和props上 -->
+
+            计算属性的 {{ }} 里面不能带括号
+
+            鼠标事件，在就事件的()第一个添加一个$event，调用时直接 e.target.value可获取输入框的值
+
+            props传入的值不能直接修改，所以也不要用在v-model上
+
+            componeds计算属性需要在原先有值得基础上才能用 watch同理
+
+            v-model如果和计算属性搭配使用的话，就是要修改值记得在计算属性的那个函数写get()和set()
+
+            如果inpit是checkbox类型的并且v-model是一个布尔值，则这个布尔值能决定checkbox是勾还是不勾
+
+            <div hello="hi"></div> div里面啊有一个hello属性，属性的值为hi
+            <div :hello="hi"></div> 加了冒号 hi就为表达式了
+
+            如果通过imporm方式引入，vue脚手架会严格检查，用到了不存在的资源就会报错，一般bootstrap.css文件在public文件夹里面引入
+        */
+        new Vue({
+            el: '#root',  // el用于指定当前实例为哪个容器服务，值为选择器字符串
+            data: {
+                msg: '小明'
+            }  // data是存储数据的地方，为root容器提供数据，值为一个对象
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="../JS/vue.js"></script>
+</head>
+
+<body>
+    <!-- 条件渲染：
+            v-if：    （动态控制节点是否存在）
+                适用于：切换频率很低的场景
+                特点：不展示的DOM节点直接被删除
+            v-else-if:    v-if不成立往下， v-if成立就直接跳过
+            v-else:       v-if或者v-else-if都不成立就成立v-else
+            ！！！v-else-if和v-else继续必须配合且紧挨着v-if，否者报错
+            v-show：   （动态控制节点是否展示）
+                适用于：切换频率很高的场景
+                特点：不展示的DOM节点没有被删除，而是使用样式隐藏掉了
+            特别注意： 使用v-if时，DOM节点可能无法获取到，而使用v-show一定可以获取到DOM节点
+    -->
+    <div id="root">
+        <p>今天我{{ want? '想' : '不想' }}去写代码</p>
+        <button @click="want= !want">切换</button>
+        <hr>
+        <div v-show="want">我要去改bug</div>
+        <div v-show="!want">我要去打游戏</div>
+        <hr>
+        <div v-if="want">我要去改bug</div>
+        <div v-else>我要去打游戏</div>
+    </div>
+    <script type="text/javascript">
+        new Vue({
+            el: '#root',
+            data: {
+                want: true
+            }
+        })
+    </script>
+</body>
+
+</html>

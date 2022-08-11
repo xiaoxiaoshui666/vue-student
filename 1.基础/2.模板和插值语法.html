@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="../JS/vue.js"></script>
+</head>
+
+<body>
+    <!-- 
+        1.插值语法:
+            功能: 用于解析 标签体 内容。
+            写法: {{xxx}}，xxx是js表达式，且可以直接读取到data中的所有属性，是可以拼接的
+        2.指今语法:
+            功能: 用于解析标签包括:标签属性、标签体内容、绑定事件.....
+            举例: v-bind:href="xxx"或简写为 :href="xxx"，xxx同样要写js表达式，且可以直接读取到data中的所有属性。
+            备注: Vue中有很多的指令，且形式都是: v-????，此处我们只是拿v-bind举个例子。
+
+        v-text向其所在的节点中渲染文本内容。
+        v-text:  与 插值语法的 区别: v-text会替换掉节点中的内容
+        v-text： 与 V-html 的  区别；V-html支持结构的解析 但是有安全问题，在网站上任意渲染html都是非常危险的，容易导致XSS攻击（跨站脚本漏洞）
+        v-cloak： 本质是一个特殊属性，Vue实例创建完毕并接管容器后，会删掉v-cloak属性。2.使用css配合v-cloak可以解决网速慢时页面展示出{{xxx}}的问题。
+        v-once ： 所在节点在初次动态渲染后，就视为静态内容了,以后数据的改变不会引起v-once所在绩构的更新，可以用于优化性能。
+    -->
+    <div id="root">
+        <h2>{{ msg }}</h2>
+        <h2 v-text="uname"></h2>
+        <h2 v-html="onUname"></h2>
+        <br>
+        <a :href="url">点我</a>
+    </div>
+
+    <script type="text/javascript">
+        new Vue({
+            el: '#root',
+            data: {
+                msg: '小明',
+                uname: '<p>小红</p>',
+                onUname: '<p>小红</p>',
+                url: 'http://www.taobao.com'
+            }
+        })
+    </script>
+</body>
+
+</html>

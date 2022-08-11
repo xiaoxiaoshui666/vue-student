@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="../JS/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <!-- 每次data数据变化就重新分析模板结构，用到的就重新解析一遍，如果模板里面是方法的每次变化数据都会调用一遍 -->
+
+        <!-- 计算属性的应用场景是 想多一个属性这个属性是来自于其他的属性计算而来的 -->
+        <input type="text" v-model="fristname"> <br>
+        <input type="text" v-model="lastname"> <br>
+        <!-- 计算属性是直接读取使用的不能加小括号 -->
+        <span>{{ FullName }}</span> <br>
+        <input type="text" v-model="FullName">
+    </div>
+    <script type="text/javascript">
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                fristname: "小",
+                lastname: "明"
+            },
+            computed: {
+                /* 1. 什么是计算属性  :  
+                        需要的数据不存在，需要已有的数据计算加工得来的新数据 */
+                /* 2. 执行时机  ： 
+                        ①.值在页面初次渲染
+                        ②.值在页面且所依赖的值（fristname，fristname）发生变化时
+                        ③.值不在页面不管是初次渲染或者依赖的值变不变都不调用计算属性 */
+                /* 3. 和methods的区别：
+                        computed内部有缓存机制,效率更高    methods内部没有缓存,页面有几次就调几次 */
+                /* 4. 计算属性在插值表达式中不要加小括号 */
+                /* 5. 想要对数据加工后再展示, 且不想破坏原数据, 最好用计算属性 */
+                FullName: {
+                    set(value) {  // 当 FullName 被修改时调用，value是修改后的FullName值
+                        const arr = value.split('-')
+                        this.fristname = arr[0]
+                        this.lastname = arr[1]
+                    },
+                    get() {      // 当 FullName 被读取时get被调用，get的this是vm
+                        return this.fristname + '-' + this.lastname
+                    }
+
+                }
+
+                /* // 简写 
+                // vue内部是执行了这个函数 然后把 FullName的值 放在了vm上 所以不要加()
+                FullName() {   // 简写时要写成函数形式，但是只有 get读取的功能了 ， 会自动调用get方法 并把返回值作为数据读出来了
+                    return this.fristname + '-' + this.lastname
+                } */
+            },
+        })
+        console.log(vm);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="../JS/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h1>今天的天气太：{{ msg? '炎热':'凉爽' }}</h1>
+        <!-- 鼠标事件一般都是写在第一位用固定的 $event 表示，不加小括号可在方法里默认收到，加了小括号不写 $event则不能收到 -->
+        <!-- 1. 插值表达式 {{ }} 想用methods里的方法一定要加小括号，若不加小括号的可能是data的数据也可能computed计算属性里的方法，
+            2. 写在标签里面的是指令不传参时可以不加小括号  -->
+        <button @click="show1($event,666,num)">点击切换天气</button>
+        <hr />
+
+        <!-- @click.prevent="" 阻止默认事件  prevent事件修饰符 -->
+        <a href="http://www.baidu.com" @click.prevent="show2">点击跳转</a>
+        <hr />
+
+        <!-- @click.stop="" 阻止冒泡  谁往上冒泡给谁加  stop事件修饰符 -->
+        <div @click="show3">
+            <button @click.stop="show3">点击阻止冒泡</button>
+        </div>
+
+        <input @keyup.enter="show4" type="text" placeholder="按下回车提示数据">
+        <input @keyup.32="show4" type="text" placeholder="按下空格提示数据">
+    </div>
+    <script type="text/javascript">
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                msg: true,
+                num: '1345'
+            },
+            methods: {
+                show1(e, a, b) {
+                    console.log(e, a, b, this);
+                    // ,鼠标事件，传的参数，data上的数据，vm实例， 
+                    this.msg = !this.msg
+                },
+                show2(e) {
+                    console.log('跳转');
+                },
+                show3() {
+                    console.log('冒泡');
+                },
+                show4(e) {
+                    console.log(e.target.value);
+                    // console.log(e.keyCode);  // 查键盘编码
+                    // console.log(e.key);  // 查键盘名
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>
